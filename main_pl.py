@@ -1,5 +1,5 @@
 import pygame
-from classes_pl import Player, create_coins, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, BLACK, GREEN, BLUE, RED, PINK, YELLOW, SPEED
+from classes_pl import Player, Enemy, create_coins, create_enemies, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, BLACK, GREEN, BLUE, RED, PINK, YELLOW, SPEED
 
 pygame.init()
 
@@ -10,7 +10,7 @@ font = pygame.font.Font(None, 36)
 
 SCORE = 0
 
-player = Player(100, 300)
+player = Player(375, 450)
 
 platforms = [
     pygame.Rect(300, 400, 200, 20),
@@ -19,6 +19,7 @@ platforms = [
 ]
 
 coins = create_coins()
+enemies = create_enemies()
 
 running = True
 while running:
@@ -60,11 +61,22 @@ while running:
         if player.rect.colliderect(coin):
             coins.remove(coin)
             SCORE += 1
+    
+    # ЛОГІКА ВОРОГІВ
+    for enemy in enemies:
+        enemy.update()
+        if player.rect.colliderect(enemy.rect):
+            print("GAME OVER")
+            # ВИПРАВЛЕНО: При смерті летимо на стартову позицію
+            player.rect.x = 375
+            player.rect.y = 450
+            SCORE = 0
+            coins = create_coins()
 
     if len(coins) == 0:
         coins = create_coins()
 
-    # Оновлення фізики (передаємо список платформ!)
+    # Оновлення фізики
     player.update(platforms)
 
     # 3. МАЛЮВАННЯ
@@ -80,6 +92,9 @@ while running:
     
     for coin in coins:
         pygame.draw.rect(screen, YELLOW, coin)
+
+    for enemy in enemies:
+        pygame.draw.rect(screen, RED, enemy.rect)
         
     score_text = font.render(f"Score - {SCORE}", True, BLACK)
     screen.blit(score_text, (90, 90))

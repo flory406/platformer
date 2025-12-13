@@ -20,7 +20,7 @@ SPEED = 5
 class Player:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 50, 50)
-        self.vy = 0 # Швидкість по вертикалі
+        self.vy = 0 
         self.on_ground = False
         self.ryvok_timer = 0
         self.ryvok_reload = 0
@@ -44,21 +44,18 @@ class Player:
             self.vy -= 1
         return True
 
-    # УВАГА: Я додав аргумент platforms, щоб клас знав про них
     def update(self, platforms):
         if self.ryvok_reload > 0:
             self.ryvok_reload -= 1
         if self.ryvok_timer > 0:
             self.ryvok_timer -= 1
             
-        # Гравітація
         if self.ryvok_timer == 0:
             self.vy += GRAVITY
             self.rect.y += self.vy
         else:
             self.vy = 0
             
-        # Перевірка колізій з платформами
         for plat in platforms:
             if self.rect.colliderect(plat):
                 if self.vy > 0:
@@ -70,7 +67,6 @@ class Player:
                     self.vy = 0
                     self.rect.top = plat.bottom
 
-        # Підлога
         if self.rect.bottom >= 500:
             self.rect.bottom = 500
             self.vy = 0
@@ -79,9 +75,31 @@ class Player:
             if self.fuel < 100:
                 self.fuel += 1
 
+class Enemy:
+    def __init__(self, x, y, dist):
+        self.rect = pygame.Rect(x, y, 40, 40)
+        self.start_x = x
+        self.max_dist = dist
+        self.direction = 1
+        self.speed = 2
+
+    def update(self):
+        self.rect.x += self.speed * self.direction
+        if self.rect.x > self.start_x + self.max_dist:
+            self.direction = -1
+        elif self.rect.x < self.start_x:
+            self.direction = 1
+
 def create_coins():
     return [
         pygame.Rect(400, 350, 20, 20),
         pygame.Rect(150, 250, 20, 20),
         pygame.Rect(520, 150, 20, 20)
+    ]
+
+def create_enemies():
+    return [
+        # ВИПРАВЛЕНО: Чіткі координати під платформи
+        Enemy(300, 360, 160), 
+        Enemy(100, 260, 110)
     ]
