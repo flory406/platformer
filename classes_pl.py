@@ -85,7 +85,7 @@ class Enemy:
         self.start_x = x
         self.max_dist = dist
         self.direction = 1
-        self.speed = 2
+        self.speed = 1
         raw_image = pygame.image.load("enemy.png").convert_alpha()
         self.image = pygame.transform.scale(raw_image, (100, 100))
 
@@ -98,11 +98,15 @@ class Enemy:
 
 def create_coins():
     return [
-        pygame.Rect(400, 350, 20, 20),
-        pygame.Rect(150, 250, 20, 20),
-        pygame.Rect(520, 150, 20, 20)
+        # Середня платформа (найнижча). Y=380 (це 400 - 20 висоти монетки)
+        pygame.Rect(390, 380, 20, 20),
+        
+        # Ліва платформа. Y=280 (це 300 - 20)
+        pygame.Rect(165, 280, 20, 20),
+        
+        # Права платформа (найвища). Y=180 (це 200 - 20)
+        pygame.Rect(540, 180, 20, 20)
     ]
-
 def create_enemies():
     return [
         Enemy(320, 360, 120), 

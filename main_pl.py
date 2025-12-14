@@ -6,7 +6,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Полігон")
 clock = pygame.time.Clock()
-font = pygame.font.Font(None, 36)
+font = pygame.font.Font(None, 74)
 
 SCORE = 0
 
@@ -26,6 +26,9 @@ platform_image = pygame.image.load("platform.png")
 
 background_image = pygame.image.load("background.png")
 background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+coin_image = pygame.image.load("coin.png")
+coin_image = pygame.transform.scale(coin_image, (120, 90))
 
 coins = create_coins()
 enemies = create_enemies()
@@ -93,7 +96,7 @@ while running:
         screen.blit(scaled_plat, (plat.x - 20, plat.y - 25))
 
     for coin in coins:
-        pygame.draw.rect(screen, YELLOW, coin)
+        screen.blit(coin_image, (coin.x - 50, coin.y - 45))
 
     for enemy in enemies:
         screen.blit(enemy.image, (enemy.rect.x - 30, enemy.rect.y - 30))
