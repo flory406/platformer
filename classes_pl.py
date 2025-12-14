@@ -17,15 +17,17 @@ SPEED = 5
 class Player:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 50, 50)
-        self.vy = 0
+        self.vy = 0 
         self.on_ground = False
         self.ryvok_timer = 0
         self.ryvok_reload = 0
         self.fuel = 100
         self.double_jumps = 2
-        self.facing_right = True 
+        self.facing_right = True
+        
         raw_image = pygame.image.load("player.png").convert_alpha()
         scaled_image = pygame.transform.scale(raw_image, (80, 80))
+        
         self.image_right = scaled_image
         self.image_left = pygame.transform.flip(scaled_image, True, False)
 
@@ -101,6 +103,6 @@ def create_coins():
 
 def create_enemies():
     return [
-        Enemy(300, 360, 160), 
-        Enemy(100, 260, 110)
+        Enemy(320, 360, 120), 
+        Enemy(120, 260, 80)
     ]

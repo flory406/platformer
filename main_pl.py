@@ -12,22 +12,27 @@ SCORE = 0
 
 player = Player(375, 450)
 
+# Платформи 
 platforms = [
-    pygame.Rect(300, 400, 200, 20),
-    pygame.Rect(100, 300, 150, 20),
-    pygame.Rect(500, 200, 100, 20)
+    pygame.Rect(300, 400, 200, 50),
+    pygame.Rect(100, 300, 150, 50),
+    pygame.Rect(500, 200, 100, 50)
 ]
+
+
+# Трава
+grass_image = pygame.image.load("grass.jpg")
+grass_image = pygame.transform.scale(grass_image, (100, 100))
+
+platform_image = pygame.image.load("platform.png")
 
 coins = create_coins()
 enemies = create_enemies()
-grass_image = pygame.image.load("grass.jpg")
-grass_image = pygame.transform.scale(grass_image, (100, 100))
 
 running = True
 while running:
     clock.tick(60)
     
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -37,7 +42,6 @@ while running:
                 player.jump()
             if event.key == pygame.K_z:
                 player.use_ryvok()
-
 
     keys = pygame.key.get_pressed()
     player_color = BLUE
@@ -60,13 +64,11 @@ while running:
         player.rect.x += current_speed
         player.facing_right = True
         
-
     for coin in coins[:]:
         if player.rect.colliderect(coin):
             coins.remove(coin)
             SCORE += 1
     
-
     for enemy in enemies:
         enemy.update()
         if player.rect.colliderect(enemy.rect):
@@ -80,10 +82,20 @@ while running:
 
     player.update(platforms)
 
-
     screen.fill(WHITE)
+    
     for x in range(0, SCREEN_WIDTH, 100):
         screen.blit(grass_image, (x, 500))
+
+    for plat in platforms:
+        scaled_plat = pygame.transform.scale(platform_image, (plat.width + 40, plat.height + 30))
+        screen.blit(scaled_plat, (plat.x - 20, plat.y - 25))
+
+    for coin in coins:
+        pygame.draw.rect(screen, YELLOW, coin)
+
+    for enemy in enemies:
+        pygame.draw.rect(screen, RED, enemy.rect)
 
     if player.facing_right:
         current_image = player.image_right
@@ -91,18 +103,7 @@ while running:
         current_image = player.image_left
     screen.blit(current_image, (player.rect.x - 15, player.rect.y - 15))
     
-    for plat in platforms:
-        pygame.draw.rect(screen, BLACK, plat)
-        
-
     pygame.draw.rect(screen, BLACK, (20, 20, player.fuel, 20))
-    
-    for coin in coins:
-        pygame.draw.rect(screen, YELLOW, coin)
-
-    for enemy in enemies:
-        pygame.draw.rect(screen, RED, enemy.rect)
-        
     score_text = font.render(f"Score - {SCORE}", True, BLACK)
     screen.blit(score_text, (90, 90))
     
