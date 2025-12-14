@@ -20,6 +20,8 @@ platforms = [
 
 coins = create_coins()
 enemies = create_enemies()
+grass_image = pygame.image.load("grass.jpg")
+grass_image = pygame.transform.scale(grass_image, (100, 100))
 
 running = True
 while running:
@@ -80,7 +82,8 @@ while running:
 
 
     screen.fill(WHITE)
-    pygame.draw.rect(screen, GREEN, (0, 500, SCREEN_WIDTH, 100)) 
+    for x in range(0, SCREEN_WIDTH, 100):
+        screen.blit(grass_image, (x, 500))
 
     if player.facing_right:
         current_image = player.image_right
