@@ -25,7 +25,7 @@ running = True
 while running:
     clock.tick(60)
     
-    # 1. ПОДІЇ
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -36,7 +36,7 @@ while running:
             if event.key == pygame.K_z:
                 player.use_ryvok()
 
-    # 2. УПРАВЛІННЯ
+
     keys = pygame.key.get_pressed()
     player_color = BLUE
     current_speed = SPEED
@@ -53,21 +53,21 @@ while running:
         player_color = PINK
     if keys[pygame.K_LEFT]:
         player.rect.x -= current_speed
+        player.facing_right = False
     if keys[pygame.K_RIGHT]:
         player.rect.x += current_speed
+        player.facing_right = True
         
-    # Збір монет
+
     for coin in coins[:]:
         if player.rect.colliderect(coin):
             coins.remove(coin)
             SCORE += 1
     
-    # ЛОГІКА ВОРОГІВ
+
     for enemy in enemies:
         enemy.update()
         if player.rect.colliderect(enemy.rect):
-            print("GAME OVER")
-            # ВИПРАВЛЕНО: При смерті летимо на стартову позицію
             player.rect.x = 375
             player.rect.y = 450
             SCORE = 0
@@ -76,18 +76,22 @@ while running:
     if len(coins) == 0:
         coins = create_coins()
 
-    # Оновлення фізики
     player.update(platforms)
 
-    # 3. МАЛЮВАННЯ
+
     screen.fill(WHITE)
-    pygame.draw.rect(screen, GREEN, (0, 500, SCREEN_WIDTH, 100)) # Земля
-    pygame.draw.rect(screen, player_color, player.rect) # Гравець
+    pygame.draw.rect(screen, GREEN, (0, 500, SCREEN_WIDTH, 100)) 
+
+    if player.facing_right:
+        current_image = player.image_right
+    else:
+        current_image = player.image_left
+    screen.blit(current_image, (player.rect.x - 15, player.rect.y - 15))
     
     for plat in platforms:
         pygame.draw.rect(screen, BLACK, plat)
         
-    # Смужка палива
+
     pygame.draw.rect(screen, BLACK, (20, 20, player.fuel, 20))
     
     for coin in coins:

@@ -1,9 +1,7 @@
 import pygame
 
-# --- КОНСТАНТИ ---
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 
-# Кольори
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 128, 0)
@@ -12,7 +10,6 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
-# Фізика
 GRAVITY = 0.5
 JUMP_POWER = -12
 SPEED = 5
@@ -20,12 +17,17 @@ SPEED = 5
 class Player:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 50, 50)
-        self.vy = 0 
+        self.vy = 0
         self.on_ground = False
         self.ryvok_timer = 0
         self.ryvok_reload = 0
         self.fuel = 100
         self.double_jumps = 2
+        self.facing_right = True 
+        raw_image = pygame.image.load("player.png").convert_alpha()
+        scaled_image = pygame.transform.scale(raw_image, (80, 80))
+        self.image_right = scaled_image
+        self.image_left = pygame.transform.flip(scaled_image, True, False)
 
     def jump(self):
         if self.double_jumps > 0:
@@ -99,7 +101,6 @@ def create_coins():
 
 def create_enemies():
     return [
-        # ВИПРАВЛЕНО: Чіткі координати під платформи
         Enemy(300, 360, 160), 
         Enemy(100, 260, 110)
     ]
