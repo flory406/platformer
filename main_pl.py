@@ -12,7 +12,6 @@ SCORE = 0
 
 player = Player(375, 450)
 
-# Платформи 
 platforms = [
     pygame.Rect(300, 400, 200, 50),
     pygame.Rect(100, 300, 150, 50),
@@ -20,11 +19,13 @@ platforms = [
 ]
 
 
-# Трава
 grass_image = pygame.image.load("grass.jpg")
 grass_image = pygame.transform.scale(grass_image, (100, 100))
 
 platform_image = pygame.image.load("platform.png")
+
+background_image = pygame.image.load("background.png")
+background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 coins = create_coins()
 enemies = create_enemies()
@@ -82,7 +83,7 @@ while running:
 
     player.update(platforms)
 
-    screen.fill(WHITE)
+    screen.blit(background_image, (0, 0))
     
     for x in range(0, SCREEN_WIDTH, 100):
         screen.blit(grass_image, (x, 500))
