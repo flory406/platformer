@@ -86,6 +86,8 @@ class Enemy:
         self.max_dist = dist
         self.direction = 1
         self.speed = 2
+        raw_image = pygame.image.load("enemy.png").convert_alpha()
+        self.image = pygame.transform.scale(raw_image, (100, 100))
 
     def update(self):
         self.rect.x += self.speed * self.direction

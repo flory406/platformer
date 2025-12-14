@@ -96,7 +96,7 @@ while running:
         pygame.draw.rect(screen, YELLOW, coin)
 
     for enemy in enemies:
-        pygame.draw.rect(screen, RED, enemy.rect)
+        screen.blit(enemy.image, (enemy.rect.x - 30, enemy.rect.y - 30))
 
     if player.facing_right:
         current_image = player.image_right
