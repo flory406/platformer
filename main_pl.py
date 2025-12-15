@@ -6,7 +6,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Полігон")
 clock = pygame.time.Clock()
-font = pygame.font.Font(None, 74)
+font = pygame.font.SysFont('arial', 30, True, False)
 
 SCORE = 0
 
@@ -108,8 +108,27 @@ while running:
     screen.blit(current_image, (player.rect.x - 15, player.rect.y - 15))
     
     pygame.draw.rect(screen, BLACK, (20, 20, player.fuel, 20))
-    score_text = font.render(f"Score - {SCORE}", True, BLACK)
-    screen.blit(score_text, (60, 60))
+
+    pygame.draw.rect(screen, WHITE, (20, 20, 104, 24), 2)
+    
+    # Колір палива
+    fuel_color = GREEN
+    if player.fuel < 30:
+        fuel_color = RED
+    elif player.fuel < 60:
+        fuel_color = YELLOW
+        
+    # Смужка палива всередині
+    if player.fuel > 0:
+        pygame.draw.rect(screen, fuel_color, (22, 22, player.fuel, 20))
+
+    score_text_content = f"Score: {SCORE}"
+    shadow_surf = font.render(score_text_content, True, BLACK)
+    screen.blit(shadow_surf, (22, 62)) 
+    text_surf = font.render(score_text_content, True, WHITE)
+    screen.blit(text_surf, (20, 60))
+        
+    pygame.display.flip()
     
     pygame.display.flip()
 
