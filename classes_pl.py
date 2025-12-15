@@ -67,6 +67,8 @@ class Player:
                     self.on_ground = True
                     self.rect.bottom = plat.top
                     self.double_jumps = 2
+                    if self.fuel < 100:
+                        self.fuel += 1
                 elif self.vy < 0:
                     self.vy = 0
                     self.rect.top = plat.bottom

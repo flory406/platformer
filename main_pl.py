@@ -13,9 +13,9 @@ SCORE = 0
 player = Player(375, 450)
 
 platforms = [
-    pygame.Rect(300, 400, 200, 50),
-    pygame.Rect(100, 300, 100, 50),
-    pygame.Rect(500, 200, 80, 50)
+    pygame.Rect(300, 400, 200, 10),
+    pygame.Rect(100, 300, 100, 10),
+    pygame.Rect(500, 200, 80, 10)
 ]
 
 
@@ -92,7 +92,7 @@ while running:
         screen.blit(grass_image, (x, 500))
 
     for plat in platforms:
-        scaled_plat = pygame.transform.scale(platform_image, (plat.width + 90, plat.height + 40))
+        scaled_plat = pygame.transform.scale(platform_image, (plat.width + 90, plat.height + 80))
         screen.blit(scaled_plat, (plat.x - 35, plat.y - 40))
 
     for coin in coins:
