@@ -16,8 +16,16 @@ try:
     jetpack_sound = pygame.mixer.Sound("jetpack_sound.mp3")
     jetpack_sound.set_volume(0.2)
 except:
-    print("Увага: Файл звуку не знайдено!")
+    print("Увага: Файл jetpack_sound.mp3 не знайдено!")
     jetpack_sound = None
+
+try:
+    coin_sound = pygame.mixer.Sound("coin_sound.mp3")
+    coin_sound.set_volume(0.3)
+except:
+    print("Увага: Файл coin_sound.mp3 не знайдено!")
+    coin_sound = None
+
 
 platforms = [
     pygame.Rect(300, 400, 200, 10),
@@ -87,6 +95,8 @@ while running:
         if player.rect.colliderect(coin):
             coins.remove(coin)
             SCORE += 1
+            if coin_sound:
+                coin_sound.play()
 
 
     for enemy in enemies:
@@ -141,6 +151,13 @@ while running:
     screen.blit(shadow_surf, (22, 62)) 
     text_surf = font.render(score_text_content, True, WHITE)
     screen.blit(text_surf, (20, 60))
+
+    if SCORE >= 3:
+        win_text = font.render("YOU WIN!", True, RED)
+        screen.blit(win_text, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2))
+        if jetpack_sound:
+            jetpack_sound.stop()
+
     pygame.display.flip()
 
 pygame.quit()
