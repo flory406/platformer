@@ -14,8 +14,8 @@ player = Player(375, 450)
 
 platforms = [
     pygame.Rect(300, 400, 200, 50),
-    pygame.Rect(100, 300, 150, 50),
-    pygame.Rect(500, 200, 100, 50)
+    pygame.Rect(100, 300, 100, 50),
+    pygame.Rect(500, 200, 80, 50)
 ]
 
 
@@ -72,7 +72,8 @@ while running:
         if player.rect.colliderect(coin):
             coins.remove(coin)
             SCORE += 1
-    
+
+
     for enemy in enemies:
         enemy.update()
         if player.rect.colliderect(enemy.rect):
@@ -83,7 +84,6 @@ while running:
 
     if len(coins) == 0:
         coins = create_coins()
-
     player.update(platforms)
 
     screen.blit(background_image, (0, 0))
@@ -92,8 +92,8 @@ while running:
         screen.blit(grass_image, (x, 500))
 
     for plat in platforms:
-        scaled_plat = pygame.transform.scale(platform_image, (plat.width + 40, plat.height + 30))
-        screen.blit(scaled_plat, (plat.x - 20, plat.y - 25))
+        scaled_plat = pygame.transform.scale(platform_image, (plat.width + 90, plat.height + 40))
+        screen.blit(scaled_plat, (plat.x - 35, plat.y - 40))
 
     for coin in coins:
         screen.blit(coin_image, (coin.x - 50, coin.y - 45))
@@ -109,7 +109,7 @@ while running:
     
     pygame.draw.rect(screen, BLACK, (20, 20, player.fuel, 20))
     score_text = font.render(f"Score - {SCORE}", True, BLACK)
-    screen.blit(score_text, (90, 90))
+    screen.blit(score_text, (60, 60))
     
     pygame.display.flip()
 
