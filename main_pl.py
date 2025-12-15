@@ -6,18 +6,24 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Полігон")
 clock = pygame.time.Clock()
-font = pygame.font.SysFont('arial', 30, True, False)
+font = pygame.font.SysFont('arial', 40, True, False)
 
 SCORE = 0
 
 player = Player(375, 450)
+
+try:
+    jetpack_sound = pygame.mixer.Sound("jetpack_sound.mp3")
+    jetpack_sound.set_volume(0.2)
+except:
+    print("Увага: Файл звуку не знайдено!")
+    jetpack_sound = None
 
 platforms = [
     pygame.Rect(300, 400, 200, 10),
     pygame.Rect(100, 300, 100, 10),
     pygame.Rect(500, 200, 80, 10)
 ]
-
 
 grass_image = pygame.image.load("grass.jpg")
 grass_image = pygame.transform.scale(grass_image, (100, 100))
@@ -46,6 +52,15 @@ while running:
                 player.jump()
             if event.key == pygame.K_z:
                 player.use_ryvok()
+            
+            if event.key == pygame.K_UP:
+                if jetpack_sound:
+                    jetpack_sound.play(-1) 
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                if jetpack_sound:
+                    jetpack_sound.stop()
 
     keys = pygame.key.get_pressed()
     player_color = BLUE
@@ -81,9 +96,12 @@ while running:
             player.rect.y = 450
             SCORE = 0
             coins = create_coins()
+            if jetpack_sound:
+                jetpack_sound.stop()
 
-    if len(coins) == 0:
+    if len(coins) == 0 and SCORE < 3:
         coins = create_coins()
+        
     player.update(platforms)
 
     screen.blit(background_image, (0, 0))
@@ -107,18 +125,14 @@ while running:
         current_image = player.image_left
     screen.blit(current_image, (player.rect.x - 15, player.rect.y - 15))
     
-    pygame.draw.rect(screen, BLACK, (20, 20, player.fuel, 20))
-
     pygame.draw.rect(screen, WHITE, (20, 20, 104, 24), 2)
     
-    # Колір палива
     fuel_color = GREEN
     if player.fuel < 30:
         fuel_color = RED
     elif player.fuel < 60:
         fuel_color = YELLOW
         
-    # Смужка палива всередині
     if player.fuel > 0:
         pygame.draw.rect(screen, fuel_color, (22, 22, player.fuel, 20))
 
@@ -127,9 +141,6 @@ while running:
     screen.blit(shadow_surf, (22, 62)) 
     text_surf = font.render(score_text_content, True, WHITE)
     screen.blit(text_surf, (20, 60))
-        
-    pygame.display.flip()
-    
     pygame.display.flip()
 
 pygame.quit()
